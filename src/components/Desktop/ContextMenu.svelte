@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { elevation } from '🍎/actions';
-	import { context_menu_config } from '🍎/configs/menu/context.menu.config.ts';
-	import { fade_out } from '🍎/helpers/fade.ts';
-	import { preferences } from '🍎/state/preferences.svelte.ts';
+	import { context_menu_config } from '🍎/configs/menu/context.menu.config';
+	import { fade_out } from '🍎/helpers/fade';
+	import { preferences } from '🍎/state/preferences.svelte';
 
 	const { target_element }: { target_element: HTMLElement } = $props();
 

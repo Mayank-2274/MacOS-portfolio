@@ -2,7 +2,7 @@
 	import { addMonths, format } from 'date-fns';
 	import LeftArrow from '~icons/ic/round-chevron-left';
 	import RightArrow from '~icons/ic/round-chevron-right';
-	import { preferences } from '🍎/state/preferences.svelte.ts';
+	import { preferences } from '🍎/state/preferences.svelte';
 	import MonthView from './MonthView.svelte';
 
 	const { view = 'month' }: { view?: 'year' | 'month' | 'week' | 'day' } = $props();

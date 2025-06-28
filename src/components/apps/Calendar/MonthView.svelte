@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { preferences } from '🍎/state/preferences.svelte.ts';
+	import { preferences } from '🍎/state/preferences.svelte';
 	import { DAYS_OF_THE_WEEK } from './calendar-constants.ts';
 	import { get_display_days } from './calendar-utils.ts';
 

@@ -5,43 +5,135 @@
 	import PlusMinus from '~icons/majesticons/plus-minus-2';
 	import Division from '~icons/ph/divide-bold';
 	import Multiply from '~icons/uil/multiply';
+
+	// Calculator state
+	let displayValue = '0';
+	let previousValue: number | null = null;
+	let operation: string | null = null;
+	let waitingForOperand = false;
+
+	// Handle number button clicks
+	function handleNumberClick(num: string) {
+		if (waitingForOperand) {
+			displayValue = num;
+			waitingForOperand = false;
+		} else {
+			displayValue = displayValue === '0' ? num : displayValue + num;
+		}
+	}
+
+	// Handle decimal point
+	function handleDecimalClick() {
+		if (waitingForOperand) {
+			displayValue = '0.';
+			waitingForOperand = false;
+		} else if (displayValue.indexOf('.') === -1) {
+			displayValue += '.';
+		}
+	}
+
+	// Handle operation buttons
+	function handleOperationClick(op: string) {
+		const inputValue = parseFloat(displayValue);
+
+		if (previousValue === null) {
+			previousValue = inputValue;
+		} else if (operation) {
+			const result = performCalculation(previousValue, inputValue, operation);
+			displayValue = String(result);
+			previousValue = result;
+		}
+
+		waitingForOperand = true;
+		operation = op;
+	}
+
+	// Perform calculations
+	function performCalculation(firstValue: number, secondValue: number, op: string): number {
+		switch (op) {
+			case '+':
+				return firstValue + secondValue;
+			case '-':
+				return firstValue - secondValue;
+			case '×':
+				return firstValue * secondValue;
+			case '÷':
+				return firstValue / secondValue;
+			case '%':
+				return firstValue % secondValue;
+			default:
+				return secondValue;
+		}
+	}
+
+	// Handle equals button
+	function handleEqualsClick() {
+		if (!operation || previousValue === null) return;
+
+		const inputValue = parseFloat(displayValue);
+		const result = performCalculation(previousValue, inputValue, operation);
+		
+		displayValue = String(result);
+		previousValue = null;
+		operation = null;
+		waitingForOperand = true;
+	}
+
+	// Handle clear button
+	function handleClearClick() {
+		displayValue = '0';
+		previousValue = null;
+		operation = null;
+		waitingForOperand = false;
+	}
+
+	// Handle plus/minus button
+	function handlePlusMinusClick() {
+		displayValue = String(-parseFloat(displayValue));
+	}
+
+	// Handle percentage button
+	function handlePercentageClick() {
+		const value = parseFloat(displayValue);
+		displayValue = String(value / 100);
+	}
 </script>
 
 <section class="container">
 	<header class="app-window-drag-handle"></header>
 
-	<section class="show-area">0</section>
+	<section class="show-area">{displayValue}</section>
 
 	<section class="buttons-container">
-		<button class="top-row-button"> AC </button>
-		<button class="top-row-button">
+		<button class="top-row-button" on:click={handleClearClick}> AC </button>
+		<button class="top-row-button" on:click={handlePlusMinusClick}>
 			<PlusMinus />
 		</button>
-		<button class="top-row-button"> % </button>
-		<button class="operation-button">
+		<button class="top-row-button" on:click={handlePercentageClick}> % </button>
+		<button class="operation-button" on:click={() => handleOperationClick('÷')}>
 			<Division />
 		</button>
-		<button class="number-button"> 7 </button>
-		<button class="number-button"> 8 </button>
-		<button class="number-button"> 9 </button>
-		<button class="operation-button">
+		<button class="number-button" on:click={() => handleNumberClick('7')}> 7 </button>
+		<button class="number-button" on:click={() => handleNumberClick('8')}> 8 </button>
+		<button class="number-button" on:click={() => handleNumberClick('9')}> 9 </button>
+		<button class="operation-button" on:click={() => handleOperationClick('×')}>
 			<Multiply />
 		</button>
-		<button class="number-button"> 4 </button>
-		<button class="number-button"> 5 </button>
-		<button class="number-button"> 6 </button>
-		<button class="operation-button">
+		<button class="number-button" on:click={() => handleNumberClick('4')}> 4 </button>
+		<button class="number-button" on:click={() => handleNumberClick('5')}> 5 </button>
+		<button class="number-button" on:click={() => handleNumberClick('6')}> 6 </button>
+		<button class="operation-button" on:click={() => handleOperationClick('-')}>
 			<Minus />
 		</button>
-		<button class="number-button"> 1 </button>
-		<button class="number-button"> 2 </button>
-		<button class="number-button"> 3 </button>
-		<button class="operation-button"> <Plus /> </button>
-		<button class="number-button curved-bottom-left-button" style:grid-column="1 / span 2">
+		<button class="number-button" on:click={() => handleNumberClick('1')}> 1 </button>
+		<button class="number-button" on:click={() => handleNumberClick('2')}> 2 </button>
+		<button class="number-button" on:click={() => handleNumberClick('3')}> 3 </button>
+		<button class="operation-button" on:click={() => handleOperationClick('+')}> <Plus /> </button>
+		<button class="number-button curved-bottom-left-button" style:grid-column="1 / span 2" on:click={() => handleNumberClick('0')}>
 			0
 		</button>
-		<button class="number-button"> . </button>
-		<button class="operation-button curved-bottom-right-button"> <Equal /> </button>
+		<button class="number-button" on:click={handleDecimalClick}> . </button>
+		<button class="operation-button curved-bottom-right-button" on:click={handleEqualsClick}> <Equal /> </button>
 	</section>
 </section>
 

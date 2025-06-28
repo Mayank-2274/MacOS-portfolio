@@ -2,8 +2,8 @@
 	import type { Snippet } from 'svelte';
 	import { sineInOut } from 'svelte/easing';
 	import { click_outside, elevation, portal, trapFocus } from '🍎/actions';
-	import { fade_out } from '🍎/helpers/fade.ts';
-	import { preferences } from '🍎/state/preferences.svelte.ts';
+	import { fade_out } from '🍎/helpers/fade';
+	import { preferences } from '🍎/state/preferences.svelte';
 
 	const {
 		backdrop_dismiss = true,

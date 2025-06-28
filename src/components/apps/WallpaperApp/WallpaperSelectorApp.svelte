@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { wallpapers_config, type WallpaperID } from '🍎/configs/wallpapers/wallpaper.config.ts';
-	import { preferences } from '🍎/state/preferences.svelte.ts';
+	import { wallpapers_config, type WallpaperID } from '🍎/configs/wallpapers/wallpaper.config';
+	import { preferences } from '🍎/state/preferences.svelte';
 
 	const dynamic_wallpapers = Object.entries(wallpapers_config).filter(
 		([, { type }]) => type === 'dynamic',

@@ -8,9 +8,9 @@
 
 	import { colors } from '🍎/configs/theme/colors.config';
 	import { wallpapers_config } from '🍎/configs/wallpapers/wallpaper.config';
-	import { apps } from '🍎/state/apps.svelte.ts';
+	import { apps } from '🍎/state/apps.svelte';
 	import { should_show_notch } from '🍎/state/menubar.svelte';
-	import { preferences } from '🍎/state/preferences.svelte.ts';
+	import { preferences } from '🍎/state/preferences.svelte';
 
 	import ActionCenterSurface from './ActionCenterSurface.svelte';
 	import ActionCenterTile from './ActionCenterTile.svelte';

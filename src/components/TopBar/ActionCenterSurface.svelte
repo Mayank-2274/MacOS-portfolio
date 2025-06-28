@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { preferences } from '🍎/state/preferences.svelte.ts';
+	import { preferences } from '🍎/state/preferences.svelte';
 
 	const {
 		grid,

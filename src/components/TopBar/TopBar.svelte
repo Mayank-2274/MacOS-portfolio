@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { fade_out } from '🍎/helpers/fade';
-	import { should_show_notch } from '🍎/state/menubar.svelte.ts';
+	import { should_show_notch } from '🍎/state/menubar.svelte';
 
 	import { sineIn } from 'svelte/easing';
 	import { fade } from 'svelte/transition';

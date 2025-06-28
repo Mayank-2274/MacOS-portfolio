@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
 	import { elevation } from '🍎/actions';
-	import { wallpapers_config } from '🍎/configs/wallpapers/wallpaper.config.ts';
-	import { smaller_closest_value } from '🍎/helpers/smaller-closest-value.ts';
-	import { create_interval } from '🍎/state/interval.svelte.ts';
-	import { preferences } from '🍎/state/preferences.svelte.ts';
+	import { wallpapers_config } from '🍎/configs/wallpapers/wallpaper.config';
+	import { smaller_closest_value } from '🍎/helpers/smaller-closest-value';
+	import { create_interval } from '🍎/state/interval.svelte';
+	import { preferences } from '🍎/state/preferences.svelte';
 
 	let visible_background_image = $state(wallpapers_config.ventura.image);
 

@@ -3,8 +3,8 @@
 	import { sineIn } from 'svelte/easing';
 	import { fade } from 'svelte/transition';
 	import { click_outside, elevation, focus_outside } from '🍎/actions';
-	import { fade_out } from '🍎/helpers/fade.ts';
-	import { apps } from '🍎/state/apps.svelte.ts';
+	import { fade_out } from '🍎/helpers/fade';
+	import { apps } from '🍎/state/apps.svelte';
 	import SwitchSvg from '../SVG/SwitchSVG.svelte';
 	import SystemDialog from '../SystemUI/SystemDialog.svelte';
 	import ActionCenter from './ActionCenter.svelte';

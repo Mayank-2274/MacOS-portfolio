@@ -13,7 +13,7 @@ export const apps = $state({
 		calendar: false,
 		// 'system-preferences': false,
 
-		'purus-twitter': false,
+		'mayank-profile': false,
 		'view-source': true,
 
 		vercel: true,
@@ -37,7 +37,7 @@ export const apps = $state({
 		calendar: 0,
 		// 'system-preferences': 0,
 
-		'purus-twitter': 0,
+		'mayank-profile': 0,
 		'view-source': 0,
 
 		vercel: 0,
@@ -55,7 +55,7 @@ export const apps = $state({
 		calendar: false,
 		// 'system-preferences': false,
 
-		'purus-twitter': false,
+		'mayank-profile': false,
 		'view-source': false,
 
 		vercel: false,

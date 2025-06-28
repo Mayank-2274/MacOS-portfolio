@@ -2,7 +2,101 @@
 	import AppleIcon from '~icons/mdi/apple';
 	import { click_outside, elevation, focus_outside } from '🍎/actions';
 	import { menubar_state } from '🍎/state/menubar.svelte';
+	import { show_bootup_screen } from '🍎/state/system.svelte';
 	import Menu from './Menu.svelte';
+	import { apps } from '🍎/state/apps.svelte';
+
+	function handleMenuItemClick(menuId: string, itemId: string) {
+		// Handle apple menu actions
+		if (menuId === 'apple') {
+			switch (itemId) {
+				case 'restart':
+					handleRestart();
+					break;
+				case 'shutdown':
+					handleShutdown();
+					break;
+				case 'sleep':
+					handleSleep();
+					break;
+				case 'lock-screen':
+					handleLockScreen();
+					break;
+				case 'logout':
+					handleLogout();
+					break;
+				case 'about-this-mac':
+					handleAboutThisMac();
+					break;
+				case 'system-preferences':
+					handleSystemPreferences();
+					break;
+				case 'app-store':
+					handleAppStore();
+					break;
+				case 'recent-items':
+					handleRecentItems();
+					break;
+				case 'force-quit':
+					handleForceQuit();
+					break;
+			}
+		}
+		
+		// Close the menu after action
+		menubar_state.active = '';
+	}
+
+	function handleRestart() {
+		// Show bootup screen and then reload
+		show_bootup_screen.value = true;
+		setTimeout(() => {
+			window.location.reload();
+		}, 100);
+	}
+
+	function handleShutdown() {
+		// Close the window/tab
+		window.close();
+	}
+
+	function handleSleep() {
+		// Simulate sleep by hiding the interface
+		document.body.style.display = 'none';
+		setTimeout(() => {
+			document.body.style.display = 'block';
+		}, 2000);
+	}
+
+	function handleLockScreen() {
+		// Simulate lock screen - do nothing for now
+	}
+
+	function handleLogout() {
+		// Simulate logout
+		window.location.reload();
+	}
+
+	function handleAboutThisMac() {
+		apps.open['about-this-mac'] = true;
+		apps.active = 'about-this-mac';
+	}
+
+	function handleSystemPreferences() {
+		// Do nothing for now
+	}
+
+	function handleAppStore() {
+		// Do nothing for now
+	}
+
+	function handleRecentItems() {
+		// Do nothing for now
+	}
+
+	function handleForceQuit() {
+		// Do nothing for now
+	}
 </script>
 
 <div
@@ -35,7 +129,10 @@
 				style:visibility={menubar_state.active === menuID ? 'visible' : 'hidden'}
 				use:elevation={'menubar-menu-parent'}
 			>
-				<Menu menu={menuConfig.menu} />
+				<Menu 
+					menu={menuConfig.menu} 
+					onMenuItemClick={(itemId) => handleMenuItemClick(menuID, itemId)}
+				/>
 			</div>
 		</div>
 	{/each}

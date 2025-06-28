@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { sleep } from '🍎/helpers/sleep';
-	import type { AppID } from '🍎/state/apps.svelte.ts';
-	import { preferences } from '🍎/state/preferences.svelte.ts';
-	import { spring } from '🍎/state/spring.svelte.ts';
+	import type { AppID } from '🍎/state/apps.svelte';
+	import { preferences } from '🍎/state/preferences.svelte';
+	import { spring } from '🍎/state/spring.svelte';
 
 	const { app_id }: { app_id: AppID } = $props();
 

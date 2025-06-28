@@ -1,12 +1,24 @@
 <script lang="ts">
-	import { preferences } from '🍎/state/preferences.svelte.ts';
+	import { preferences } from '🍎/state/preferences.svelte';
 
-	const { menu }: { menu: any } = $props();
+	const { menu, onMenuItemClick }: { menu: any; onMenuItemClick?: (itemId: string) => void } = $props();
+
+	function handleMenuItemClick(itemId: string) {
+		if (onMenuItemClick) {
+			onMenuItemClick(itemId);
+		}
+	}
 </script>
 
 <section class="container" class:dark={preferences.theme.scheme === 'dark'}>
-	{#each Object.entries(menu) as Array<[any, any]> as [_, val]}
-		<button class="menu-item" disabled={val.disabled}>{val.title}</button>
+	{#each Object.entries(menu) as Array<[any, any]> as [itemId, val]}
+		<button 
+			class="menu-item" 
+			disabled={val.disabled}
+			on:click={() => handleMenuItemClick(itemId)}
+		>
+			{val.title}
+		</button>
 		{#if val.breakAfter}
 			<div class="divider"></div>
 		{/if}

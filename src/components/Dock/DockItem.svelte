@@ -28,9 +28,9 @@
 	import { sineInOut } from 'svelte/easing';
 	import { spring, tweened } from 'svelte/motion';
 	import { elevation } from '🍎/actions';
-	import { apps_config } from '🍎/configs/apps/apps-config.ts';
-	import { apps, type AppID } from '🍎/state/apps.svelte.ts';
-	import { preferences } from '🍎/state/preferences.svelte.ts';
+	import { apps_config } from '🍎/configs/apps/apps-config';
+	import { apps, type AppID } from '🍎/state/apps.svelte';
+	import { preferences } from '🍎/state/preferences.svelte';
 
 	const {
 		mouse_x,

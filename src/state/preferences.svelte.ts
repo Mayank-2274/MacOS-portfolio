@@ -1,5 +1,5 @@
-import { colors } from '🍎/configs/theme/colors.config.ts';
-import type { WallpaperID } from '🍎/configs/wallpapers/wallpaper.config.ts';
+import { colors } from '🍎/configs/theme/colors.config';
+import type { WallpaperID } from '🍎/configs/wallpapers/wallpaper.config';
 import { persisted } from './persisted.svelte.ts';
 
 export type WallpaperSettings = {

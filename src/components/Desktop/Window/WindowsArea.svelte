@@ -2,6 +2,7 @@
 	import { untrack } from 'svelte';
 	import { apps_config } from '🍎/configs/apps/apps-config';
 	import { apps } from '🍎/state/apps.svelte';
+	import AboutThisMac from '🍎/components/apps/AboutThisMac/AboutThisMac.svelte';
 
 	$effect(() => {
 		apps.active;

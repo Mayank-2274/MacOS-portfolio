@@ -1,4 +1,4 @@
-import type { Theme } from '🍎/state/preferences.svelte.ts';
+import type { Theme } from '🍎/state/preferences.svelte';
 
 export type Wallpaper = {
 	name: string;

@@ -1,4 +1,5 @@
-import { create_app_config } from '🍎/helpers/create-app-config.ts';
+import { create_app_config } from '🍎/helpers/create-app-config';
+import AboutThisMac from '🍎/components/apps/AboutThisMac/AboutThisMac.svelte';
 
 const wallpapers = create_app_config({
 	title: 'Wallpapers',
@@ -51,12 +52,10 @@ const systemPreferences = create_app_config({
 	resizable: true,
 });
 
-const purusTwitter = create_app_config({
+const mayankProfile = create_app_config({
 	title: `About the Developer`,
 	resizable: true,
-
 	dock_breaks_before: true,
-
 	height: 600,
 	width: 800,
 });
@@ -64,25 +63,29 @@ const purusTwitter = create_app_config({
 const viewSource = create_app_config({
 	title: `View Source`,
 	resizable: true,
-
 	should_open_window: false,
-	external_action: () => window.open('https://github.com/puruvj/macos-web', '_blank'),
+	external_action: () => window.open('https://github.com/Mayank-2274/macos-web', '_blank'),
 });
 
 const vercel = create_app_config({
 	title: `Powered by Vercel`,
 	resizable: true,
-
 	should_open_window: false,
 	external_action: () =>
-		window.open('https://vercel.com/?utm_source=purus-projects&utm_campaign=oss', '_blank'),
-
+		window.open('https://vercel.com/?utm_source=mayank-projects&utm_campaign=oss', '_blank'),
 	dock_breaks_before: true,
 });
 
 const appstore = create_app_config({
 	title: 'App Store',
 	resizable: true,
+});
+
+const aboutThisMac = create_app_config({
+	title: 'About This Mac',
+	resizable: false,
+	width: 480,
+	height: 380,
 });
 
 export const apps_config = {
@@ -96,8 +99,9 @@ export const apps_config = {
 
 	// 'system-preferences': systemPreferences,
 
-	'purus-twitter': purusTwitter,
+	'mayank-profile': mayankProfile,
 	'view-source': viewSource,
 
 	vercel,
+	'about-this-mac': aboutThisMac,
 };

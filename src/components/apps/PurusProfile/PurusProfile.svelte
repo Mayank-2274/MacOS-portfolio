@@ -1,10 +1,18 @@
 <script lang="ts">
-	import { preferences } from '🍎/state/preferences.svelte.ts';
+	import { preferences } from '🍎/state/preferences.svelte';
 	import TwitterIcon from '~icons/mdi/twitter';
-	import BlogIcon from '~icons/mdi/grease-pencil';
+	import FileDocumentIcon from '~icons/mdi/file-document';
 	import WorksIcon from '~icons/ic/round-workspaces';
 	import GithubIcon from '~icons/mdi/github';
 	import DevToIcon from '~icons/mdi/dev-to';
+	import profileImage from '../../../assets/wallpapers/image.png';
+	import UserIcon from '~icons/mdi/account';
+
+	let activeTab = 'profile';
+
+	function switchTab(tab: string) {
+		activeTab = tab;
+	}
 
 	function external(node: HTMLAnchorElement) {
 		node.rel = 'noopener noreferrer';
@@ -19,46 +27,74 @@
 
 	<aside class:light={preferences.theme.scheme === 'light'}>
 		<nav>
-			<a href="https://www.puruvj.dev/blog" use:external> <BlogIcon /> Blog </a>
-			<a href="https://www.puruvj.dev/works" use:external> <WorksIcon /> Works </a>
+			<button class="nav-button" class:active={activeTab === 'profile'} on:click={() => switchTab('profile')}>
+				<UserIcon />                            Profile
+			</button>
+			<button class="nav-button" class:active={activeTab === 'resume'} on:click={() => switchTab('resume')}>
+				<FileDocumentIcon />                     Resume 	
+			</button>
+			<a href="https:mayank-22portfolio.netlify.app" use:external> <WorksIcon /> Ubuntu Portfolio</a>
 
 			<hr />
 
-			<a href="https://www.puruvj.dev/twitter" use:external>
-				<TwitterIcon />
-				Twitter
-			</a>
-			<a href="https://www.puruvj.dev/github" use:external> <GithubIcon /> Github </a>
-			<a href="https://www.puruvj.dev/devto" use:external> <DevToIcon /> Dev.to </a>
+			
+			<a href="https://github.com/Mayank-2274" use:external> <GithubIcon /> Github </a>
+			
 		</nav>
 	</aside>
 
 	<section class="content">
-		<img height="200" width="200" src="/purus-profile/puru.webp" alt="Puru Vijay Profile pic" />
+		{#if activeTab === 'profile'}
+			<img height="200" width="200" src={profileImage} alt="Developer profile" />
 
-		<br />
+			<br />
 
-		<h1>Hi, I'm Puru</h1>
+			<h1>Hi, I'm Mayank</h1>
 
-		<h2>
-			I'm the creator of macOS Web, which you're on right now
-			<img src="/emojis/wink.png" alt="Wink emoji" class="emoji" />
-		</h2>
+			<h2>
+				I'm the creator of macOS Web, which you're on right now
+				<img src="/emojis/wink.png" alt="Wink emoji" class="emoji" />
+			</h2>
 
-		<br /><br />
+			<br /><br />
 
-		<p>
-			I am a fullstack web developer, with an infinite amount of love for frontend web development,
-			esp JavaScript, TypeScript, and for frontend frameworks like Svelte, Vue and React
-			<img src="/emojis/star-struck.png" alt="Star Struck face emoji" class="emoji" />
-		</p>
+			<p>
+				I am a fullstack web developer, with an infinite amount of love for frontend web development,
+				specifically JavaScript, TypeScript, and for frontend frameworks like Svelte, Vue and React, NextJS, TailwindCSS, and for backend frameworks like NodeJS, Express, and MongoDB.
+				<img src="/emojis/star-struck.png" alt="Star Struck face emoji" class="emoji" />
+			</p>
 
-		<br /><br />
+			<br /><br />
 
-		<p>
-			However, my love for tech doesn't end there. I enjoy writing backend APIs, scripts, working
-			with databases, and my fav platforms are NodeJS, Deno and Go
-		</p>
+			<p>
+				However, my love for tech doesn't end there. I enjoy writing backend APIs, scripts, working
+				with databases, and my fav platforms are NodeJS, Python, and Go.
+			</p>
+		{:else if activeTab === 'resume'}
+			<div class="resume-content">
+				<h1><b>Resume</b></h1>
+				<br />
+				<h2>Mayank</h2>
+				<p>Full Stack Web Developer</p>
+				
+				<br />
+				<h3>Skills</h3>
+				<ul>
+					<li>Frontend: JavaScript, TypeScript, React, Vue, Svelte, NextJS, TailwindCSS</li>
+					<li>Backend: NodeJS, Express, Python, Go</li>
+					<li>Database: MongoDB, SQL, PostgreSQL, ChromaDB</li>
+					<li>Tools: Git, Docker, AWS</li>
+				</ul>
+				
+				<br />
+				<h3>Experience</h3>
+				<p></p>
+				
+				<br />
+				<h3>Education</h3>
+				<p>Dayananda Sagar Institutions, Bangalore</p>
+			</div>
+		{/if}
 	</section>
 </section>
 
@@ -81,6 +117,16 @@
 		transition: --color 200ms ease-in;
 
 		color: var(--system-color-dark);
+		
+		/* Ensure proper height for scrolling */
+		min-height: 100%;
+		height: 100%;
+		
+		/* Handle fullscreen mode */
+		:global(.fullscreen) & {
+			height: 100vh;
+			overflow: hidden;
+		}
 	}
 
 	.titlebar {
@@ -146,6 +192,12 @@
 			border-top-left-radius: 0.5rem;
 			border-bottom-left-radius: 0.5rem;
 		}
+		
+		/* Handle fullscreen mode */
+		:global(.fullscreen) & {
+			height: calc(100vh - 2.7px);
+			overflow-y: auto;
+		}
 
 		nav {
 			display: flex;
@@ -184,6 +236,36 @@
 					background-color: hsla(var(--system-color-dark-hsl), 0.2);
 				}
 			}
+
+			.nav-button {
+				display: flex;
+				gap: 0.4rem;
+				align-items: center;
+
+				color: hsla(var(--system-color-dark-hsl), 0.9);
+				text-decoration: none;
+				font-weight: 400;
+				font-size: inherit;
+				font-family: inherit;
+
+				padding: 0.5rem 0.5rem;
+
+				border-radius: 0.4rem;
+				border: none;
+				background: none;
+				cursor: pointer;
+
+				transition: background-color 100ms ease;
+
+				&:hover {
+					background-color: hsla(var(--system-color-dark-hsl), 0.2);
+				}
+
+				&.active {
+					background-color: hsla(var(--system-color-dark-hsl), 0.3);
+					font-weight: 500;
+				}
+			}
 		}
 	}
 
@@ -195,9 +277,21 @@
 		align-items: center;
 
 		padding: 1rem;
+		
+		/* Ensure content is scrollable */
+		overflow-y: auto;
+		max-height: 100%;
+		height: 100%;
 
 		img {
 			border-radius: 50%;
+		}
+		
+		/* Handle fullscreen mode */
+		:global(.fullscreen) & {
+			max-height: calc(100vh - 3rem);
+			height: calc(100vh - 3rem);
+			overflow-y: auto;
 		}
 	}
 
@@ -220,5 +314,49 @@
 
 	p {
 		line-height: 1.618rem;
+	}
+
+	.resume-content {
+		width: 100%;
+		max-width: 800px;
+		margin: 0 auto;
+		text-align: left;
+
+		h1 {
+			font-size: 2.5rem;
+			margin-bottom: 1rem;
+			color: hsla(var(--system-color-dark-hsl), 0.9);
+		}
+
+		h2 {
+			font-size: 1.8rem;
+			margin-bottom: 0.5rem;
+			color: hsla(var(--system-color-dark-hsl), 0.8);
+		}
+
+		h3 {
+			font-size: 1.4rem;
+			margin-bottom: 0.5rem;
+			color: hsla(var(--system-color-dark-hsl), 0.8);
+			border-bottom: 2px solid hsla(var(--system-color-dark-hsl), 0.2);
+			padding-bottom: 0.25rem;
+		}
+
+		p {
+			line-height: 1.6;
+			margin-bottom: 1rem;
+			color: hsla(var(--system-color-dark-hsl), 0.7);
+		}
+
+		ul {
+			margin-bottom: 1.5rem;
+			padding-left: 1.5rem;
+
+			li {
+				line-height: 1.6;
+				margin-bottom: 0.5rem;
+				color: hsla(var(--system-color-dark-hsl), 0.7);
+			}
+		}
 	}
 </style>

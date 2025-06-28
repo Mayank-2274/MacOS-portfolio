@@ -4,20 +4,33 @@
 	import { tweened } from 'svelte/motion';
 	import AppleIcon from '~icons/mdi/apple';
 	import { elevation } from '🍎/actions';
-	import { fade_out } from '🍎/helpers/fade.ts';
+	import { fade_out } from '🍎/helpers/fade';
 	import { sleep } from '🍎/helpers/sleep';
+	import { show_bootup_screen } from '🍎/state/system.svelte';
 
 	let hidden_splash_screen = $state(false);
 	let progress_val = tweened(100, { duration: 3000, easing: quintInOut });
+	let startupAudio: HTMLAudioElement;
 
 	onMount(async () => {
+		// Create and play startup sound
+		startupAudio = new Audio('/sounds/mac-startup-sound.mp3');
+		startupAudio.volume = 0.7; // Set volume to 70%
+		
+		try {
+			await startupAudio.play();
+		} catch (error) {
+			console.log('Could not play startup sound:', error);
+		}
+
 		$progress_val = 0;
 		await sleep(3000);
 		hidden_splash_screen = true;
+		show_bootup_screen.value = false;
 	});
 </script>
 
-{#if !(hidden_splash_screen || import.meta.env.DEV)}
+{#if !hidden_splash_screen && show_bootup_screen.value}
 	<div out:fade_out={{ duration: 500 }} class="splash-screen" use:elevation={'bootup-screen'}>
 		<AppleIcon />
 

@@ -13,11 +13,11 @@
 	import { onMount, untrack } from 'svelte';
 	import { sineInOut } from 'svelte/easing';
 	import { elevation } from '🍎/actions';
-	import { apps_config } from '🍎/configs/apps/apps-config.ts';
-	import { rand_int } from '🍎/helpers/random.ts';
+	import { apps_config } from '🍎/configs/apps/apps-config';
+	import { rand_int } from '🍎/helpers/random';
 	import { sleep } from '🍎/helpers/sleep';
-	import { apps, type AppID } from '🍎/state/apps.svelte.ts';
-	import { preferences } from '🍎/state/preferences.svelte.ts';
+	import { apps, type AppID } from '🍎/state/apps.svelte';
+	import { preferences } from '🍎/state/preferences.svelte';
 
 	import AppNexus from '../../apps/AppNexus.svelte';
 	import TrafficLights from './TrafficLights.svelte';
@@ -44,6 +44,22 @@
 	};
 
 	const disabledComp = Compartment.of(() => disabled(!dragging_enabled));
+
+	// Dynamic bounds based on fullscreen state
+	const boundsComp = Compartment.of(() => {
+		if (is_maximized) {
+			// Allow movement within viewport when fullscreen
+			return bounds(BoundsFrom.viewport({ 
+				bottom: -window.innerHeight + 100, 
+				top: 0, 
+				left: -window.innerWidth + 100, 
+				right: 0 
+			}));
+		} else {
+			// Normal bounds for regular windows
+			return bounds(BoundsFrom.viewport({ bottom: -6000, top: 27.2, left: -6000, right: -6000 }));
+		}
+	});
 
 	$effect(() => {
 		apps.active_z_index;
@@ -76,20 +92,34 @@
 		}
 
 		if (!is_maximized) {
-			dragging_enabled = false;
+			// Keep dragging enabled for fullscreen mode
+			dragging_enabled = true;
 
 			minimized_transform = windowEl.style.transform;
+			
+			// Set to top-left corner but keep it draggable
 			windowEl.style.transform = `translate(0px, 0px)`;
 
-			windowEl.style.width = `100%`;
-			// windowEl.style.height = 'calc(100vh - 1.7rem - 5.25rem)';
-			windowEl.style.height = 'calc(100vh - 1.7rem)';
+			windowEl.style.width = `100vw`;
+			windowEl.style.height = '100vh';
+			
+			// Add scrolling functionality
+			windowEl.style.overflow = 'auto';
+			
+			// Add fullscreen class
+			windowEl.classList.add('fullscreen');
 		} else {
 			dragging_enabled = true;
 			windowEl.style.transform = minimized_transform;
 
 			windowEl.style.width = `${+width / remModifier}rem`;
 			windowEl.style.height = `${+height / remModifier}rem`;
+			
+			// Remove scrolling when restoring
+			windowEl.style.overflow = 'hidden';
+			
+			// Remove fullscreen class
+			windowEl.classList.remove('fullscreen');
 		}
 
 		is_maximized = !is_maximized;
@@ -131,7 +161,7 @@
 	bind:this={windowEl}
 	{@attach draggable(() => [
 		controls({ allow: ControlFrom.selector('.app-window-drag-handle') }),
-		bounds(BoundsFrom.viewport({ bottom: -6000, top: 27.2, left: -6000, right: -6000 })),
+		boundsComp,
 		disabledComp,
 		position({ default: defaultPosition }),
 		events({ onDragStart: onAppDragStart, onDragEnd: onAppDragEnd }),
@@ -166,6 +196,9 @@
 
 		cursor: var(--system-cursor-default), auto;
 
+		/* Add overflow handling for fullscreen */
+		overflow: hidden;
+
 		&.active {
 			/* // --elevated-shadow: 0px 6.7px 12px rgba(0, 0, 0, 0.218), 0px 22.3px 40.2px rgba(0, 0, 0, 0.322),
       //   0px 100px 180px rgba(0, 0, 0, 0.54); */
@@ -182,6 +215,19 @@
 					var(--elevated-shadow);
 			}
 		}
+
+		/* Fullscreen specific styles */
+		&:global(.fullscreen) {
+			border-radius: 0;
+			overflow: auto;
+			box-shadow: none;
+			/* Remove fixed positioning to allow movement */
+			position: absolute;
+			/* Remove transform override to allow dragging */
+			width: 100vw !important;
+			height: 100vh !important;
+			z-index: 9999;
+		}
 	}
 
 	.tl-container {
@@ -191,5 +237,8 @@
 
 		/* // Necessary, as `.container` tries to apply shadow on it */
 		box-shadow: none !important;
+		
+		/* Ensure traffic lights are visible in fullscreen */
+		z-index: 10000;
 	}
 </style>
