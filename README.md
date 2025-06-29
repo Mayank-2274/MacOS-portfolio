@@ -1,6 +1,6 @@
 
 
-# Mac OS Ventura Web
+# Mac OS Web
 
 This open source project aims to replicate some of the Mac OS(Monterey, at the time of writing)'s desktop experience on web, using Svelte!
 
