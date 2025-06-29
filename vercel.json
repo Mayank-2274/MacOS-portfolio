@@ -17,5 +17,16 @@
 				}
 			]
 		}
-	]
+	],
+	"rewrites": [
+		{
+			"source": "/(.*)",
+			"destination": "/index.html"
+		}
+	],
+	"functions": {
+		"src/**/*.svelte": {
+			"runtime": "nodejs18.x"
+		}
+	}
 }

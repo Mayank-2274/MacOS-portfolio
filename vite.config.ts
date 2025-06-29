@@ -10,6 +10,7 @@ import path from 'path';
 import { prefetch } from './prefetch-plugin';
 
 export default defineConfig({
+	base: '/',
 	plugins: [
 		svelte(),
 		prefetch(),
@@ -68,11 +69,31 @@ export default defineConfig({
 	build: {
 		minify: 'terser',
 		cssMinify: 'lightningcss',
+		rollupOptions: {
+			output: {
+				manualChunks: {
+					'calendar': ['./src/components/apps/Calendar/Calendar.svelte'],
+					'calculator': ['./src/components/apps/Calculator/Calculator.svelte'],
+					'vscode': ['./src/components/apps/VSCode/VSCode.svelte'],
+					'wallpapers': ['./src/components/apps/WallpaperApp/WallpaperSelectorApp.svelte'],
+					'profile': ['./src/components/apps/PurusProfile/PurusProfile.svelte'],
+					'about-mac': ['./src/components/apps/AboutThisMac/AboutThisMac.svelte'],
+					'appstore': ['./src/components/apps/AppStore/AppStore.svelte'],
+				},
+			},
+		},
 	},
 	css: {
 		transformer: 'lightningcss',
 		lightningcss: {
 			targets: browserslistToTargets(browserslist('defaults, not IE 11, not IE_Mob 11, not dead')),
 		},
+	},
+	optimizeDeps: {
+		include: [
+			'@neodrag/svelte',
+			'popmotion',
+			'date-fns',
+		],
 	},
 });
