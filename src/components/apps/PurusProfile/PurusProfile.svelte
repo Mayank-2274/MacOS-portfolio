@@ -33,7 +33,7 @@
 			<button class="nav-button" class:active={activeTab === 'resume'} on:click={() => switchTab('resume')}>
 				<FileDocumentIcon />                     Resume 	
 			</button>
-			<a href="https:mayank-22portfolio.netlify.app" use:external> <WorksIcon /> Ubuntu Portfolio</a>
+			<a href="https://mayank-22portfolio.netlify.app" target="_blank" use:external> <WorksIcon /> Ubuntu Portfolio</a>
 
 			<hr />
 
