@@ -87,6 +87,7 @@
 
 <div
 	class="background-cover"
+	data-background
 	style:background-image="url({visible_background_image})"
 	use:elevation={'wallpaper'}
 ></div>

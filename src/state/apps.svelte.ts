@@ -8,9 +8,10 @@ export const apps = $state({
 		finder: true,
 		vscode: false,
 		calculator: false,
-		// safari: false,
+		safari: false,
 		appstore: false,
 		calendar: false,
+		tv: false,
 		// 'system-preferences': false,
 
 		'mayank-profile': false,
@@ -32,9 +33,10 @@ export const apps = $state({
 		finder: 0,
 		vscode: 0,
 		calculator: 0,
-		// safari: 0,
+		safari: 0,
 		appstore: 0,
 		calendar: 0,
+		tv: 0,
 		// 'system-preferences': 0,
 
 		'mayank-profile': 0,
@@ -50,9 +52,10 @@ export const apps = $state({
 		finder: false,
 		vscode: false,
 		calculator: false,
-		// safari: false,
+		safari: false,
 		appstore: false,
 		calendar: false,
+		tv: false,
 		// 'system-preferences': false,
 
 		'mayank-profile': false,
@@ -61,3 +64,15 @@ export const apps = $state({
 		vercel: false,
 	} as Record<AppID, boolean>,
 });
+
+// Function to close a specific app window
+export function closeApp(appId: AppID) {
+	apps.open[appId] = false;
+	apps.z_indices[appId] = 0;
+	apps.fullscreen[appId] = false;
+	
+	// If the closed app was active, set finder as active
+	if (apps.active === appId) {
+		apps.active = 'finder';
+	}
+}

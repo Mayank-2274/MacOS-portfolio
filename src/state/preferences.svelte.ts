@@ -13,17 +13,27 @@ export type Theme = {
 	primaryColor: keyof typeof colors;
 };
 
-export const preferences = persisted('macos:preferences', {
-	reduced_motion: matchMedia('(prefers-reduced-motion)').matches,
+export type Preferences = {
+	theme: Theme;
+	wallpaper: {
+		id: WallpaperID;
+		canControlTheme: boolean;
+	};
+	reduced_motion: boolean;
+	liquid_glass: boolean;
+};
+
+export const preferences = persisted<Preferences>('macos:preferences', {
 	theme: {
 		scheme: matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light',
 		primaryColor: 'blue',
-	} as Theme,
+	},
 	wallpaper: {
-		image: 'ventura-2',
-		id: 'ventura',
+		id: 'big-sur-1',
 		canControlTheme: true,
-	} as WallpaperSettings,
+	},
+	reduced_motion: matchMedia('(prefers-reduced-motion)').matches,
+	liquid_glass: false,
 });
 
 $effect.root(() => {

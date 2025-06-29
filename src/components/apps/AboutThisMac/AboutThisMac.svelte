@@ -34,7 +34,7 @@ function maximizeApp() {
         <img class="profile-img" src="/app-icons/mayank-profile/256.webp" alt="Profile" />
       </div>
       <div class="right">
-        <h1>macOS Sequoia</h1>
+        <h1>MacOS Sequoia</h1>
         <div class="version">Version 14.0 Beta (23A5043h)</div>
         <div class="info">
           <div>MacBook Air (M2, 2022)</div>

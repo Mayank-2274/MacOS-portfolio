@@ -44,6 +44,7 @@
 <svelte:window bind:innerHeight={bodyHeight} />
 
 <section
+	id="dock"
 	class="dock-container"
 	class:dock-hidden={is_dock_hidden.value}
 	bind:this={dockContainerEl}

@@ -38,10 +38,17 @@
 	const randX = rand_int(-600, 600);
 	const randY = rand_int(-100, 100);
 
-	let defaultPosition = {
-		x: (document.body.clientWidth / 2 + randX) / 2,
-		y: (100 + randY) / 2,
-	};
+	// Check if this app should open in full screen by default
+	const shouldOpenFullscreen = apps_config[app_id].fullscreen_by_default;
+	
+	// Check if this is the About This Mac app
+	const isAboutThisMac = app_id === 'about-this-mac';
+
+	let defaultPosition = shouldOpenFullscreen 
+		? { x: 0, y: 0 } // Top-left position for full screen apps
+		: isAboutThisMac 
+			? { x: 50, y: 50 } // Fixed center position for About This Mac
+			: { x: 0, y: 0 }; // Top-left position for all other apps
 
 	const disabledComp = Compartment.of(() => disabled(!dragging_enabled));
 
@@ -97,7 +104,7 @@
 
 			minimized_transform = windowEl.style.transform;
 			
-			// Set to top-left corner but keep it draggable
+			// Ensure the window is positioned at the top-left corner for full screen
 			windowEl.style.transform = `translate(0px, 0px)`;
 
 			windowEl.style.width = `100vw`;
@@ -145,7 +152,22 @@
 		apps.is_being_dragged = false;
 	}
 
-	onMount(() => windowEl?.focus());
+	onMount(() => {
+		windowEl?.focus();
+		
+		// Check if this app should open in full screen by default
+		if (apps_config[app_id].fullscreen_by_default && !is_maximized) {
+			// Immediately set the position to (0,0) for full screen apps
+			if (windowEl) {
+				windowEl.style.transform = `translate(0px, 0px)`;
+			}
+			
+			// Use setTimeout to ensure the window is fully rendered before maximizing
+			setTimeout(() => {
+				maximizeApp();
+			}, 100);
+		}
+	});
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->

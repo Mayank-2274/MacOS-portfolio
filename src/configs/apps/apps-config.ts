@@ -4,19 +4,15 @@ import AboutThisMac from '🍎/components/apps/AboutThisMac/AboutThisMac.svelte'
 const wallpapers = create_app_config({
 	title: 'Wallpapers',
 	resizable: true,
-
 	height: 600,
 	width: 800,
-
 	dock_breaks_before: true,
 });
 
 const calculator = create_app_config({
 	title: 'Calculator',
-
 	expandable: true,
 	resizable: false,
-
 	height: 250 * 1.414,
 	width: 250,
 });
@@ -29,7 +25,6 @@ const calendar = create_app_config({
 const vscode = create_app_config({
 	title: 'VSCode',
 	resizable: true,
-
 	height: 600,
 	width: 800,
 });
@@ -37,7 +32,6 @@ const vscode = create_app_config({
 const finder = create_app_config({
 	title: 'Finder',
 	resizable: true,
-
 	// dockBreaksBefore: true,
 	should_open_window: false,
 });
@@ -45,6 +39,14 @@ const finder = create_app_config({
 const safari = create_app_config({
 	title: 'Safari',
 	resizable: true,
+	fullscreen_by_default: true,
+});
+
+const tv = create_app_config({
+	title: 'Apple TV',
+	resizable: true,
+	height: 600,
+	width: 800,
 });
 
 const systemPreferences = create_app_config({
@@ -95,7 +97,8 @@ export const apps_config = {
 	calendar,
 	vscode,
 	appstore,
-	// safari,
+	safari,
+	tv,
 
 	// 'system-preferences': systemPreferences,
 

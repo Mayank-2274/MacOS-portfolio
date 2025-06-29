@@ -2,6 +2,7 @@
 	import { untrack } from 'svelte';
 	import { apps_config } from '🍎/configs/apps/apps-config';
 	import { apps } from '🍎/state/apps.svelte';
+	import { closeApp } from '🍎/state/apps.svelte';
 	import AboutThisMac from '🍎/components/apps/AboutThisMac/AboutThisMac.svelte';
 
 	$effect(() => {
@@ -29,9 +30,50 @@
 			}
 		}
 	});
+
+	// Custom click outside handler
+	function setupClickOutsideHandler(node) {
+		const handleClick = (e) => {
+			// Don't close if clicking on dock, topbar, or their children
+			const target = e.target;
+			if (target.closest('#dock') || target.closest('#topbar')) {
+				return;
+			}
+			
+			// Don't close if clicking on liquid glass or other UI elements
+			if (target.closest('[data-background]')) {
+				return;
+			}
+			
+			// Check if click is on the desktop background (main container)
+			const mainContainer = document.querySelector('.container');
+			if (mainContainer && mainContainer.contains(target)) {
+				// Check if the click is on any window
+				const isOnWindow = target.closest('.container[role="application"]');
+				
+				// If not on a window, close all windows
+				if (!isOnWindow) {
+					// Close all open windows except finder
+					Object.keys(apps.open).forEach(appId => {
+						if (apps.open[appId] && appId !== 'finder') {
+							closeApp(appId);
+						}
+					});
+				}
+			}
+		};
+
+		document.addEventListener('click', handleClick, true);
+
+		return {
+			destroy() {
+				document.removeEventListener('click', handleClick, true);
+			},
+		};
+	}
 </script>
 
-<section id="windows-area">
+<section id="windows-area" use:setupClickOutsideHandler>
 	{#each Object.keys(apps_config) as app_id}
 		{#if apps.open[app_id] && apps_config[app_id].should_open_window}
 			{#await import('./Window.svelte') then { default: Window }}

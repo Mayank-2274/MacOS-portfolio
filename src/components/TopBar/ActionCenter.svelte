@@ -5,6 +5,7 @@
 	import CheckedIcon from '~icons/ic/outline-check';
 	import TransitionMaskedIcon from '~icons/mdi/transition-masked';
 	import NotchIcon from '~icons/pepicons/smartphone-notch';
+	import LiquidGlassIcon from '~icons/mdi/water';
 
 	import { colors } from '🍎/configs/theme/colors.config';
 	import { wallpapers_config } from '🍎/configs/wallpapers/wallpaper.config';
@@ -39,6 +40,10 @@
 
 	function toggleMotionPreference() {
 		preferences.reduced_motion = !preferences.reduced_motion;
+	}
+
+	function toggleLiquidGlass() {
+		preferences.liquid_glass = !preferences.liquid_glass;
 	}
 
 	function openWallpapersApp() {
@@ -148,6 +153,20 @@
 				</span>
 				Notch
 			</div>
+		</ActionCenterTile>
+	</ActionCenterSurface>
+
+	<ActionCenterSurface
+		grid={[
+			[1, 12],
+			[10, 2],
+		]}
+	>
+		<ActionCenterTile grid={[1, 1]} onclick={toggleLiquidGlass}>
+			<span class="toggle-icon" class:filled={preferences.liquid_glass}>
+				<LiquidGlassIcon />
+			</span>
+			Liquid Glass
 		</ActionCenterTile>
 	</ActionCenterSurface>
 </section>

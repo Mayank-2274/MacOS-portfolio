@@ -9,7 +9,7 @@
 	import TopBarTime from './TopBarTime.svelte';
 </script>
 
-<header>
+<header id="topbar">
 	<MenuBar />
 
 	<span style:flex="1 1 auto"></span>

@@ -119,6 +119,11 @@
 		bounceEffect();
 	}
 
+	function handleImageError(event: Event) {
+		const img = event.target as HTMLImageElement;
+		img.src = `/app-icons/${app_id}/256.png`;
+	}
+
 	onDestroy(() => {
 		cancelAnimationFrame(raf);
 	});
@@ -131,7 +136,11 @@
 	});
 </script>
 
-<button onclick={openApp} aria-label="Launch {title} app" class="dock-open-app-button {app_id}">
+<button 
+	onclick={openApp} 
+	aria-label="Launch {title} app" 
+	class="dock-open-app-button {app_id} {app_id === 'about-this-mac' ? 'about-this-mac' : ''}"
+>
 	<p
 		class="tooltip"
 		class:tooltip-enabled={!apps.is_being_dragged}
@@ -150,6 +159,7 @@
 			alt="{title} app"
 			style:width="{$width_px / 16}rem"
 			draggable="false"
+			onerror={handleImageError}
 		/>
 	</span>
 
@@ -165,6 +175,11 @@
 		will-change: width;
 	}
 
+	/* Make About the Developer app icon round */
+	.mayank-profile img {
+		border-radius: 50%;
+	}
+
 	button {
 		display: flex;
 		flex-direction: column;
@@ -172,19 +187,17 @@
 		position: relative;
 
 		border-radius: 0.5rem;
+	}
 
-		&:hover,
-		&:focus-visible {
-			.tooltip.tooltip-enabled {
-				display: block;
-			}
-		}
+	button:hover .tooltip.tooltip-enabled,
+	button:focus-visible .tooltip.tooltip-enabled {
+		display: block;
+	}
 
-		& > span {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-		}
+	button > span {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
 	.tooltip {
@@ -211,11 +224,11 @@
 		letter-spacing: 0.4px;
 
 		display: none;
+	}
 
-		&.dark {
-			--double-border: inset 0 0 0 0.9px hsla(var(--system-color-dark-hsl), 0.3),
-				0 0 0 1.2px hsla(var(--system-color-light-hsl), 0.3);
-		}
+	.tooltip.dark {
+		--double-border: inset 0 0 0 0.9px hsla(var(--system-color-dark-hsl), 0.3),
+			0 0 0 1.2px hsla(var(--system-color-light-hsl), 0.3);
 	}
 
 	.dot {

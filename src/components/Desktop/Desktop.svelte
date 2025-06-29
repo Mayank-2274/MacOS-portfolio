@@ -6,6 +6,7 @@
 	import ContextMenu from './ContextMenu.svelte';
 	import SystemUpdate from './SystemUpdate.svelte';
 	import WindowsArea from './Window/WindowsArea.svelte';
+	import LiquidGlass from '../LiquidGlass/LiquidGlass.svelte';
 
 	const isMac = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
 
@@ -31,6 +32,7 @@
 	<Wallpaper />
 	<BootupScreen />
 	<SystemUpdate />
+	<LiquidGlass />
 
 	<ContextMenu target_element={mainEl} />
 </div>

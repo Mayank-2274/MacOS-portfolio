@@ -13,6 +13,9 @@ export type AppConfig = {
 
 	/** Break before this app */
 	dock_breaks_before?: boolean;
+
+	/** Open in full screen by default */
+	fullscreen_by_default?: boolean;
 };
 
 export const create_app_config = (et: AppConfig) =>
@@ -25,5 +28,6 @@ export const create_app_config = (et: AppConfig) =>
 
 		width: 600,
 		height: 500,
+		fullscreen_by_default: false,
 		...et,
 	}) satisfies AppConfig;

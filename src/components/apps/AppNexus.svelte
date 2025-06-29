@@ -61,6 +61,18 @@
 		{:catch error}
 			<div class="error">Failed to load Wallpapers: {error.message}</div>
 		{/await}
+	{:else if app_id === 'safari'}
+		{#await import('./Safari/Safari.svelte') then { default: Safari }}
+			<Safari />
+		{:catch error}
+			<div class="error">Failed to load Safari: {error.message}</div>
+		{/await}
+	{:else if app_id === 'tv'}
+		{#await import('./AppleTV/AppleTV.svelte') then { default: AppleTV }}
+			<AppleTV {is_being_dragged} />
+		{:catch error}
+			<div class="error">Failed to load Apple TV: {error.message}</div>
+		{/await}
 	{:else if app_id === 'mayank-profile'}
 		{#await import('./PurusProfile/PurusProfile.svelte') then { default: PurusProfile }}
 			<PurusProfile />
