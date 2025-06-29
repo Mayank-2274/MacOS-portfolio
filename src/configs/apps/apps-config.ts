@@ -64,7 +64,7 @@ const viewSource = create_app_config({
 	title: `View Source`,
 	resizable: true,
 	should_open_window: false,
-	external_action: () => window.open('https://github.com/Mayank-2274/macos-web', '_blank'),
+	external_action: () => window.open('https://github.com/Mayank-2274/MacOS-portfolio', '_blank'),
 });
 
 const vercel = create_app_config({
@@ -72,7 +72,7 @@ const vercel = create_app_config({
 	resizable: true,
 	should_open_window: false,
 	external_action: () =>
-		window.open('https://vercel.com/?utm_source=mayank-projects&utm_campaign=oss', '_blank'),
+		window.open('https://vercel.com/mayank-2274s-projects/mac-os-portfolio', '_blank'),
 	dock_breaks_before: true,
 });
 
