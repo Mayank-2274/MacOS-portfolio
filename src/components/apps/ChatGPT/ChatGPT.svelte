@@ -192,7 +192,7 @@
 			const errorMessage: Message = {
 				id: Date.now().toString(),
 				type: 'assistant',
-				content: 'Sorry, I encountered an error. Please try again.',
+				content: 'Sorry! I can only create images, switch to chat mode to ask me anything. Or try again by giving a more detailed prompt for image generation.',
 				timestamp: new Date()
 			};
 			messages.push(errorMessage);
