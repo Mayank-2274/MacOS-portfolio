@@ -12,7 +12,7 @@
 	} from '@neodrag/svelte';
 	import { onMount, untrack } from 'svelte';
 	import { sineInOut } from 'svelte/easing';
-	import { elevation } from '🍎/actions';
+	import { elevation, resize_window } from '🍎/actions';
 	import { apps_config } from '🍎/configs/apps/apps-config';
 	import { rand_int } from '🍎/helpers/random';
 	import { sleep } from '🍎/helpers/sleep';
@@ -25,13 +25,18 @@
 	const { app_id }: { app_id: AppID } = $props();
 
 	let dragging_enabled = $state(true);
+	let resizing_enabled = $state(true);
+	let is_resizing = $state(false);
 
 	let is_maximized = $state(false);
 	let minimized_transform = $state<string>();
 
 	let windowEl = $state<HTMLElement>();
+	let current_width = $state<number>();
+	let current_height = $state<number>();
 
 	const { height, width } = apps_config[app_id];
+	const resizable = apps_config[app_id].resizable !== false;
 
 	const remModifier = +height * 1.2 >= window.innerHeight ? 24 : 16;
 
@@ -101,14 +106,26 @@
 		if (!is_maximized) {
 			// Keep dragging enabled for fullscreen mode
 			dragging_enabled = true;
+			// Disable resizing in fullscreen mode
+			resizing_enabled = false;
 
 			minimized_transform = windowEl.style.transform;
+			
+			// Store current dimensions before maximizing
+			if (current_width && current_height) {
+				windowEl.dataset.prevWidth = current_width.toString();
+				windowEl.dataset.prevHeight = current_height.toString();
+			}
 			
 			// Ensure the window is positioned at the top-left corner for full screen
 			windowEl.style.transform = `translate(0px, 0px)`;
 
 			windowEl.style.width = `100vw`;
 			windowEl.style.height = '100vh';
+			
+			// Update current dimensions
+			current_width = window.innerWidth;
+			current_height = window.innerHeight;
 			
 			// Add scrolling functionality
 			windowEl.style.overflow = 'auto';
@@ -117,12 +134,28 @@
 			windowEl.classList.add('fullscreen');
 		} else {
 			dragging_enabled = true;
+			// Re-enable resizing when exiting fullscreen
+			resizing_enabled = resizable;
+			
 			windowEl.style.transform = minimized_transform;
 
-			windowEl.style.width = `${+width / remModifier}rem`;
-			windowEl.style.height = `${+height / remModifier}rem`;
+			// Restore previous dimensions if available, otherwise use default
+			if (windowEl.dataset.prevWidth && windowEl.dataset.prevHeight) {
+				windowEl.style.width = `${windowEl.dataset.prevWidth}px`;
+				windowEl.style.height = `${windowEl.dataset.prevHeight}px`;
+				current_width = parseFloat(windowEl.dataset.prevWidth);
+				current_height = parseFloat(windowEl.dataset.prevHeight);
+			} else {
+				windowEl.style.width = `${+width / remModifier}rem`;
+				windowEl.style.height = `${+height / remModifier}rem`;
+				
+				// Update current dimensions
+				const rect = windowEl.getBoundingClientRect();
+				current_width = rect.width;
+				current_height = rect.height;
+			}
 			
-			// Remove scrolling when restoring
+			// Remove explicit overflow setting when restoring, allowing content to scroll if needed
 			windowEl.style.overflow = 'hidden';
 			
 			// Remove fullscreen class
@@ -152,8 +185,29 @@
 		apps.is_being_dragged = false;
 	}
 
+	function onResizeStart() {
+		is_resizing = true;
+		focusApp();
+	}
+
+	function onResizeEnd() {
+		is_resizing = false;
+	}
+
+	function onResize(dimensions: { width: number; height: number }) {
+		current_width = dimensions.width;
+		current_height = dimensions.height;
+	}
+
 	onMount(() => {
 		windowEl?.focus();
+		
+		// Initialize current width and height
+		if (windowEl) {
+			const rect = windowEl.getBoundingClientRect();
+			current_width = rect.width;
+			current_height = rect.height;
+		}
 		
 		// Check if this app should open in full screen by default
 		if (apps_config[app_id].fullscreen_by_default && !is_maximized) {
@@ -176,6 +230,8 @@
 	class="container"
 	class:dark={preferences.theme.scheme === 'dark'}
 	class:active={apps.active === app_id}
+	class:resizing={is_resizing}
+	class:resizable={resizable && resizing_enabled}
 	style:width="{+width / remModifier}rem"
 	style:height="{+height / remModifier}rem"
 	style:z-index={apps.z_indices[app_id]}
@@ -188,6 +244,13 @@
 		position({ default: defaultPosition }),
 		events({ onDragStart: onAppDragStart, onDragEnd: onAppDragEnd }),
 	])}
+	use:resize_window={resizable && resizing_enabled ? {
+		minWidth: 200,
+		minHeight: 150,
+		onResize,
+		onResizeStart,
+		onResizeEnd
+	} : null}
 	onclick={focusApp}
 	onkeydown={() => {}}
 	out:windowCloseTransition
@@ -211,7 +274,7 @@
 
 		position: absolute;
 
-		will-change: width, height;
+		will-change: width, height, transform;
 
 		border-radius: 0.75rem;
 		box-shadow: var(--elevated-shadow);
@@ -250,6 +313,43 @@
 			height: 100vh !important;
 			z-index: 9999;
 		}
+		
+		/* Resizing styles */
+		&.resizable {
+			/* Show resize handles only on hover or when actively resizing */
+			&:hover :global(.resize-handle),
+			&.resizing :global(.resize-handle) {
+				opacity: 1;
+			}
+		}
+		
+		/* Smooth transitions during resize */
+		&.resizing {
+			transition: none !important;
+			user-select: none;
+		}
+	}
+
+	/* Style for resize handles */
+	:global(.resize-handle) {
+		opacity: 0;
+		transition: opacity 0.2s ease;
+		background-color: transparent;
+		z-index: 10001;
+	}
+
+	:global(.resize-n),
+	:global(.resize-s),
+	:global(.resize-e),
+	:global(.resize-w) {
+		background-color: transparent;
+	}
+
+	:global(.resize-ne),
+	:global(.resize-nw),
+	:global(.resize-se),
+	:global(.resize-sw) {
+		background-color: transparent;
 	}
 
 	.tl-container {

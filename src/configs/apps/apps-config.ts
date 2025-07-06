@@ -78,6 +78,14 @@ const vercel = create_app_config({
 	dock_breaks_before: true,
 });
 
+const chatgpt = create_app_config({
+	title: 'ChatGPT',
+	resizable: true,
+	height: 600,
+	width: 800,
+	fullscreen_by_default: true,
+});
+
 const appstore = create_app_config({
 	title: 'App Store',
 	resizable: true,
@@ -99,6 +107,7 @@ export const apps_config = {
 	appstore,
 	safari,
 	tv,
+	chatgpt,
 
 	// 'system-preferences': systemPreferences,
 

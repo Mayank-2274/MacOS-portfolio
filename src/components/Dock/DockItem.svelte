@@ -121,7 +121,12 @@
 
 	function handleImageError(event: Event) {
 		const img = event.target as HTMLImageElement;
-		img.src = `/app-icons/${app_id}/256.png`;
+		// Special case for ChatGPT app which uses SVG directly
+		if (app_id === 'chatgpt') {
+			img.src = `/app-icons/${app_id}/icon.svg`;
+		} else {
+			img.src = `/app-icons/${app_id}/256.png`;
+		}
 	}
 
 	onDestroy(() => {

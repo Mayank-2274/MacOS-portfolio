@@ -85,6 +85,12 @@
 		{:catch error}
 			<div class="error">Failed to load About This Mac: {error.message}</div>
 		{/await}
+	{:else if app_id === 'chatgpt'}
+		{#await import('./ChatGPT/ChatGPT.svelte') then { default: ChatGPT }}
+			<ChatGPT {is_being_dragged} />
+		{:catch error}
+			<div class="error">Failed to load ChatGPT: {error.message}</div>
+		{/await}
 	{:else}
 		{#await import('./AppStore/AppStore.svelte') then { default: AppStore }}
 			<AppStore {app_id} />
